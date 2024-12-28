@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <style>
+  
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+
+        h1, h3, h4 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        form {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input, select, button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        input:focus, select:focus {
+            border-color: #007BFF;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .action-button {
+            padding: 8px 12px;
+            font-size: 14px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .update-button {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .update-button:hover {
+            background-color: #218838;
+        }
+
+        .delete-button {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .delete-button:hover {
+            background-color: #c82333;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            table {
+                width: 95%;
+            }
+
+            form {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to User Dashboard</h1>
+
+   
+    <form action="/createtask" method="post">
+        <h4>Create Task</h4>
+        <label for="taskname">Task Name:</label>
+        <input type="text" name="taskname" id="taskname" required>
+        <label for="taskdescription">Task Description:</label>
+        <input type="text" name="taskdescription" id="taskdescription">
+        <button type="submit">Create</button>
+    </form>
+
+    <hr>
+
+    <h3>Your Tasks</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Task Name</th>
+                <th>Task Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{range .Tasks}}
+            <tr>
+                <td>{{.Name}}</td>
+                <td>{{.Description}}</td>
+                <td>
+                   
+                    <form action="/updatetask/{{.ID}}" method="post" style="margin-bottom: 10px;">
+                        <label for="update-taskname-{{.ID}}" style="font-weight: bold;">Task Name:</label>
+                        <input type="text" name="taskname"  value="{{.Name}}" required>
+                        
+                        <label for="update-taskdescription-{{.ID}}" style="font-weight: bold;">Task Description:</label>
+                        <input type="text" name="taskdescription"  value="{{.Description}}" required>
+                        
+                        <button type="submit" class="update-button">Update</button>
+                    </form>
+                   
+                    <form action="/deletetask/{{.ID}}" method="post" >
+                        <button type="submit" >Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {{else}}
+            <tr>
+                <td colspan="3">No tasks created yet.</td>
+            </tr>
+            {{end}}
+        </tbody>
+    </table>
+
+    <!-- Logout Button -->
+    <a href="/logout"><button>Log Out</button></a>
+</body>
+</html>
